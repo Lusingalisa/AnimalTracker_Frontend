@@ -93,7 +93,7 @@ function Dashboard() {
     const fetchCattle = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3000/api/cattle', {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/cattle`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setCattle(response.data);

@@ -88,7 +88,7 @@ function Alerts() {
     const fetchAlerts = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3000/api/alerts', {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/alerts`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setAlerts(response.data);
