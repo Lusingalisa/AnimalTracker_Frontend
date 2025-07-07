@@ -1,0 +1,21 @@
+/* Remove max-width constraints */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Make the main content area grow to fill space */
+main {
+  flex: 1;
+}
+
+/* Green-themed logo effects */
+.logo:hover {
+  filter: drop-shadow(0 0 2em #2e7d32aa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #4caf50aa);
+}
+
+/* Remove the card padding override since we're handling it in components */
