@@ -11,7 +11,7 @@ function App() {
       <div className="min-vh-100 bg-light">
         <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
           <div className="container">
-            <Link className="navbar-brand" to="/">CattleTrack</Link>
+            <Link className="navbar-brand" to="/">Herd Track System</Link>
             <button
               className="navbar-toggler"
               type="button"

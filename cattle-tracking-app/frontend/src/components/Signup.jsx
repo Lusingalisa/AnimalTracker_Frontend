@@ -133,7 +133,7 @@ function Signup() {
       <div className="card w-100" style={{ maxWidth: '400px' }}>
         <div className="card-body p-4">
           <CattleIllustration />
-          <h2 className="text-center mb-4 text-primary">Sign Up for CattleTrack</h2>
+          <h2 className="text-center mb-4 text-primary">Sign Up for Herd Track</h2>
           {error && <div className="alert alert-danger">{error}</div>}
           <form onSubmit={handleSignup}>
             <div className="mb-3">

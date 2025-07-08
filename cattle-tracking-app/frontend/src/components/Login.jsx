@@ -116,7 +116,7 @@ function Login() {
       <div className="card w-100" style={{ maxWidth: '400px' }}>
         <div className="card-body p-4">
           <CattleIllustration />
-          <h2 className="text-center mb-4 text-primary">Login to CattleTrack</h2>
+          <h2 className="text-center mb-4 text-primary">Login to Herd Track</h2>
           {error && <div className="alert alert-danger">{error}</div>}
           <form onSubmit={handleLogin}>
             <div className="mb-3">

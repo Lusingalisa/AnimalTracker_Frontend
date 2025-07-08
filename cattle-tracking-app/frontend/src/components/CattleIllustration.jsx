@@ -133,7 +133,7 @@ function CattleIllustration() {
         className="cattle-illustration-img"
         style={{ maxWidth: '250px', height: 'auto', marginBottom: '1rem' }}
       />
-      <h3 className="text-primary">CattleTrack System</h3>
+      <h3 className="text-primary">Herd Track System</h3>
       <p>Monitor your livestock with precision</p>
     </div>
   );
