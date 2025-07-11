@@ -128,7 +128,7 @@ function CattleIllustration() {
   return (
     <div className="cattle-illustration-container text-center">
       <img
-        src="/images/bulls-8352687_1920.jpg"
+        src="/images/WhatsApp Image 2025-07-11 at 08.57.59.jpeg"
         alt="Professional Cow Illustration"
         className="cattle-illustration-img"
         style={{ maxWidth: '250px', height: 'auto', marginBottom: '1rem' }}
