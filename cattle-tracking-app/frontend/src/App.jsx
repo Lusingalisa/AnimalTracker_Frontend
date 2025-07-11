@@ -4,6 +4,8 @@ import Signup from './components/Signup';
 import Dashboard from './components/Dashboard';
 import Alerts from './components/Alerts';
 import ProtectedRoute from './components/ProtectedRoute';
+import CattleMap from './components/CattleMap';
+import LandingPage from './components/LandingPage';
 
 function App() {
   return (
@@ -40,7 +42,8 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/alerts" element={<ProtectedRoute><Alerts /></ProtectedRoute>} />
-          <Route path="/" element={<Login />} />
+          <Route path="/cattle-map" element={<CattleMap />} />
+          <Route path="/" element={<LandingPage />} />
         </Routes>
       </div>
     </Router>
