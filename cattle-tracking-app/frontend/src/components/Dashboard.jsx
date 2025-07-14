@@ -45,6 +45,7 @@
 //         <div>
 //           <Link to="/alerts" className="btn btn-outline-primary me-2">View Alerts</Link>
 //           <Link to="/cattle-map" className="btn btn-outline-primary me-2">Cattle Map</Link>
+//           <Link to="/geofence-manager" className="btn btn-outline-primary me-2">Geofence Manager</Link>
 //           <button className="btn btn-outline-danger" onClick={handleLogout}>
 //             Logout
 //           </button>
@@ -81,7 +82,13 @@
 //           </table>
 //         </div>
 //       )}
+//       <div className="fixed-bottom text-end mb-3 me-3">
+//         <Link to="/profile" className="btn btn-primary rounded-circle" style={{ width: '50px', height: '50px' }}>
+//           <i className="bi bi-person-fill" style={{ fontSize: '1.5rem' }}></i>
+//         </Link>
+//       </div>
 //     </div>
+    
 //   );
 // }
 
@@ -93,7 +100,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import CattleIllustration from './CattleIllustration';
-import GeofenceManager from './GeofenceManager';
+import GeofenceAlerts from './GeofenceAlerts';
 
 function Dashboard() {
   const [cattle, setCattle] = useState([]);
@@ -128,63 +135,74 @@ function Dashboard() {
         <CattleIllustration />
         <h2 className="mb-4 text-primary">Welcome, {user.name || 'User'}!</h2>
       </div>
+      
       <div className="d-flex justify-content-between mb-4">
         <h3>Cattle List</h3>
         <div>
-          <Link to="/alerts" className="btn btn-outline-primary me-2">View Alerts</Link>
+          <Link to="/alerts" className="btn btn-outline-primary me-2">View All Alerts</Link>
           <Link to="/cattle-map" className="btn btn-outline-primary me-2">Cattle Map</Link>
-          <Link to="/geofences" className="btn btn-outline-success me-2">Manage Geofences</Link>
+          <Link to="/geofence-manager" className="btn btn-outline-primary me-2">Geofence Manager</Link>
           <button className="btn btn-outline-danger" onClick={handleLogout}>
             Logout
           </button>
         </div>
       </div>
-      {error && <div className="alert alert-danger">{error}</div>}
-      {cattle.length === 0 && !error ? (
-        <p>No cattle data available.</p>
-      ) : (
-        <div className="table-responsive">
-          <table className="table table-striped table-bordered">
-            <thead className="table-dark">
-              <tr>
-                <th>Cattle ID</th>
-                <th>RFID Tag</th>
-                <th>Status</th>
-                <th>Health Status</th>
-                <th>Latitude</th>
-                <th>Longitude</th>
-                <th>Last Updated</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cattle.map((cow) => (
-                <tr key={cow.cattle_id}>
-                  <td>{cow.cattle_id}</td>
-                  <td>{cow.rfid_tag || 'N/A'}</td>
-                  <td>{cow.status || 'N/A'}</td>
-                  <td>
-                    <span className={`badge ${
-                      cow.health_status === 'excellent' ? 'bg-success' :
-                      cow.health_status === 'good' ? 'bg-primary' :
-                      cow.health_status === 'fair' ? 'bg-warning' : 'bg-danger'
-                    }`}>
-                      {cow.health_status || 'N/A'}
-                    </span>
-                  </td>
-                  <td>{cow.latitude ? cow.latitude.toFixed(6) : 'N/A'}</td>
-                  <td>{cow.longitude ? cow.longitude.toFixed(6) : 'N/A'}</td>
-                  <td>{cow.last_updated ? new Date(cow.last_updated).toLocaleString() : 'N/A'}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
       
-      {/* Geofence Management Section */}
-      <div className="mt-5">
-        <h3 className="mb-4">Geofence Management</h3>
-        <GeofenceManager />
+      {error && <div className="alert alert-danger">{error}</div>}
+      
+      <div className="row">
+        <div className="col-md-8">
+          {cattle.length === 0 && !error ? (
+            <div className="alert alert-info">No cattle data available.</div>
+          ) : (
+            <div className="table-responsive">
+              <table className="table table-striped table-bordered">
+                <thead className="table-dark">
+                  <tr>
+                    <th>Cattle ID</th>
+                    <th>Name</th>
+                    <th>RFID Tag</th>
+                    <th>Status</th>
+                    <th>Last Location</th>
+                    <th>Last Updated</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cattle.map((cow) => (
+                    <tr key={cow.cattle_id}>
+                      <td>{cow.cattle_id}</td>
+                      <td>{cow.name || 'N/A'}</td>
+                      <td>{cow.rfid_tag || 'N/A'}</td>
+                      <td>
+                        <span className={`badge ${
+                          cow.status === 'safe' ? 'bg-success' : 
+                          cow.status === 'alerted' ? 'bg-warning' : 'bg-danger'
+                        }`}>
+                          {cow.status || 'N/A'}
+                        </span>
+                      </td>
+                      <td>
+                        {cow.latitude && cow.longitude ? 
+                          `${cow.latitude.toFixed(6)}, ${cow.longitude.toFixed(6)}` : 'N/A'}
+                      </td>
+                      <td>{cow.last_updated ? new Date(cow.last_updated).toLocaleString() : 'N/A'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+        
+        <div className="col-md-4">
+          <GeofenceAlerts />
+        </div>
+      </div>
+      
+      <div className="fixed-bottom text-end mb-3 me-3">
+        <Link to="/profile" className="btn btn-primary rounded-circle" style={{ width: '50px', height: '50px' }}>
+          <i className="bi bi-person-fill" style={{ fontSize: '1.5rem' }}></i>
+        </Link>
       </div>
     </div>
   );
