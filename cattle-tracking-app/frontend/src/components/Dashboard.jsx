@@ -44,6 +44,7 @@ function Dashboard() {
         <div>
           <Link to="/alerts" className="btn btn-outline-primary me-2">View All Alerts</Link>
           <Link to="/cattle-map" className="btn btn-outline-primary me-2">Cattle Map</Link>
+          <Link to="/health" className="btn btn-outline-primary me-2">View Health</Link>
           <Link to="/geofence-manager" className="btn btn-outline-primary me-2">Geofence Manager</Link>
           <button className="btn btn-outline-danger" onClick={handleLogout}>
             Logout
