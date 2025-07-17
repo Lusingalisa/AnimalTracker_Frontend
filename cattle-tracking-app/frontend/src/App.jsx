@@ -8,6 +8,8 @@ import CattleMap from './components/CattleMap';
 import LandingPage from './components/LandingPage';
 import Profile from './components/Profile';
 import GeofenceManager from './components/GeofenceManager';
+import 'react-toastify/dist/ReactToastify.css';
+import CattleDetails from './components/CattleDetails';
 
 function App() {
   return (
@@ -47,7 +49,7 @@ function App() {
           <Route path="/cattle-map" element={<CattleMap />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/geofence-manager" element={<GeofenceManager />} />
-
+          <Route path="/cattle/:cattle_id" element={<CattleDetails />} />
           <Route path="/" element={<LandingPage />} />
         </Routes>
       </div>
