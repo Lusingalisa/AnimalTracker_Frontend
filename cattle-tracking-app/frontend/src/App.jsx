@@ -50,7 +50,7 @@ function App() {
           <Route path="/cattle-map" element={<CattleMap />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/geofence-manager" element={<GeofenceManager />} />
-          <Route path="/health" element={<Health />} />
+          <Route path="/health" element={<ProtectedRoute><Health /></ProtectedRoute>} />
           <Route path="/cattle/:cattle_id" element={<CattleDetails />} />
           <Route path="/" element={<LandingPage />} />
         </Routes>

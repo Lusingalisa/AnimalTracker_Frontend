@@ -1,10 +1,125 @@
+// import { useState, useEffect } from 'react';
+// import { useNavigate } from 'react-router-dom';
+// import axios from 'axios';
+// import { toast, ToastContainer } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+// import 'animate.css';
+// import { FaExclamationTriangle, FaCheck, FaHeartbeat, FaArrowLeft } from 'react-icons/fa';
+
+// function Health() {
+//   const [alerts, setAlerts] = useState([]);
+//   const [metricsSummary, setMetricsSummary] = useState([]);
+//   const [isLoading, setIsLoading] = useState(true);
+//   const [error, setError] = useState('');
+//   const navigate = useNavigate();
+//   const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+//   const fetchHealthData = async () => {
+//     console.log('Fetching health data...');
+//     try {
+//       const token = localStorage.getItem('token');
+//       if (!token) {
+//         throw new Error('No authentication token found');
+//       }
+
+//       const [alertsResponse, cattleResponse] = await Promise.all([
+//         axios.get(`${import.meta.env.VITE_API_URL}/api/health/alerts`, {
+//           headers: { Authorization: `Bearer ${token}` },
+//           params: { status: 'unacknowledged' },
+//         }),
+//         axios.get(`${import.meta.env.VITE_API_URL}/api/cattle`, {
+//           headers: { Authorization: `Bearer ${token}` },
+//         }),
+//       ]);
+
+//       const cattleIds = cattleResponse.data.map((cow) => cow.cattle_id);
+//       const metricsPromises = cattleIds.map((cattle_id) =>
+//         axios.get(`${import.meta.env.VITE_API_URL}/api/health/metrics/${cattle_id}`, {
+//           headers: { Authorization: `Bearer ${token}` },
+//         })
+//       );
+//       const metricsResponses = await Promise.all(metricsPromises);
+
+//       const metricsSummary = metricsResponses.map((res, index) => {
+//         const latestMetric = res.data[0] || {};
+//         return {
+//           cattle_id: cattleIds[index],
+//           cattle_name: cattleResponse.data[index].name || `Cattle #${cattleIds[index]}`,
+//           rfid_tag: cattleResponse.data[index].rfid_tag || 'N/A',
+//           heart_rate: latestMetric.heart_rate || 'N/A',
+//           body_temp: latestMetric.body_temp || 'N/A',
+//           timestamp: latestMetric.timestamp || null,
+//         };
+//       });
+
+//       setAlerts(alertsResponse.data);
+//       setMetricsSummary(metricsSummary);
+//       setError('');
+//     } catch (err) {
+//       console.error('Error fetching health data:', err);
+//       setError(err.response?.data?.message || err.message || 'Failed to fetch health data');
+//       toast.error(err.response?.data?.message || err.message || 'Failed to fetch health data');
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   };
+
+//   useEffect(() => {
+//     const wsUrl = import.meta.env.VITE_API_URL 
+//       ? import.meta.env.VITE_API_URL.replace('http', 'ws') + '/ws'
+//       : 'ws://localhost:5000';
+      
+//     const ws = new WebSocket(`wss://${wsUrl}`);
+
+//     ws.onopen = () => {
+//       console.log('WebSocket connected');
+//     };
+
+//     ws.onmessage = (event) => {
+//       const message = JSON.parse(event.data);
+//       if (message.type === 'NEW_HEALTH_ALERT') {
+//         const alert = message.data;
+//         setAlerts((prev) => [{ ...alert, animateIn: true }, ...prev]);
+//         toast.warn(
+//           <div onClick={() => navigate(`/cattle/${alert.cattle_id}`)} style={{ cursor: 'pointer' }}>
+//             <h6>Health Alert: {alert.cattle_name || `Cattle #${alert.cattle_id}`}</h6>
+//             <p>{alert.message}</p>
+//             <small>{new Date(alert.timestamp).toLocaleString()}</small>
+//           </div>,
+//           { autoClose: 5000 }
+//         );
+//       }
+//     };
+
+//     ws.onerror = (error) => {
+//       console.error('WebSocket error:', error);
+//       toast.error('WebSocket connection error');
+//     };
+
+//     ws.onclose = () => {
+//       console.log('WebSocket closed');
+//     };
+
+//     fetchHealthData();
+//     const interval = setInterval(fetchHealthData, 30000);
+//     return () => {
+//       ws.close();
+//       clearInterval(interval);
+//     };
+//   }, [navigate]);
+
+//   // ... rest of the component code remains the same ...
+// }
+
+// export default Health;  
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'animate.css';
-import { FaExclamationTriangle, FaCheck, FaHeartbeat } from 'react-icons/fa';
+import { FaExclamationTriangle, FaCheck, FaHeartbeat, FaArrowLeft } from 'react-icons/fa';
 
 function Health() {
   const [alerts, setAlerts] = useState([]);
@@ -14,10 +129,14 @@ function Health() {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
-  // Fetch health alerts and metrics summary
   const fetchHealthData = async () => {
+    console.log('Fetching health data...');
     try {
       const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
       const [alertsResponse, cattleResponse] = await Promise.all([
         axios.get(`${import.meta.env.VITE_API_URL}/api/health/alerts`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -50,17 +169,26 @@ function Health() {
 
       setAlerts(alertsResponse.data);
       setMetricsSummary(metricsSummary);
+      setError('');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to fetch health data');
-      toast.error(err.response?.data?.message || 'Failed to fetch health data');
+      console.error('Error fetching health data:', err);
+      setError(err.response?.data?.message || err.message || 'Failed to fetch health data');
+      toast.error(err.response?.data?.message || err.message || 'Failed to fetch health data');
     } finally {
       setIsLoading(false);
     }
   };
 
-  // WebSocket for real-time health alerts
   useEffect(() => {
-    const ws = new WebSocket(`wss://${window.location.hostname}:5000`);
+    // Construct WebSocket URL
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+    const wsUrl = apiUrl
+      .replace('http://', 'ws://')
+      .replace('https://', 'wss://') + '/ws';
+
+    console.log('Connecting to WebSocket at:', wsUrl);
+
+    const ws = new WebSocket(wsUrl);
 
     ws.onopen = () => {
       console.log('WebSocket connected');
@@ -75,7 +203,7 @@ function Health() {
           <div onClick={() => navigate(`/cattle/${alert.cattle_id}`)} style={{ cursor: 'pointer' }}>
             <h6>Health Alert: {alert.cattle_name || `Cattle #${alert.cattle_id}`}</h6>
             <p>{alert.message}</p>
-            <small>{new Date(alert.timestamp).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}</small>
+            <small>{new Date(alert.timestamp).toLocaleString()}</small>
           </div>,
           { autoClose: 5000 }
         );
@@ -84,6 +212,7 @@ function Health() {
 
     ws.onerror = (error) => {
       console.error('WebSocket error:', error);
+      toast.error('Realtime connection error. Using periodic updates instead.');
     };
 
     ws.onclose = () => {
@@ -91,7 +220,7 @@ function Health() {
     };
 
     fetchHealthData();
-    const interval = setInterval(fetchHealthData, 30000); // Polling fallback
+    const interval = setInterval(fetchHealthData, 30000);
     return () => {
       ws.close();
       clearInterval(interval);
@@ -124,6 +253,11 @@ function Health() {
           <span className="visually-hidden">Loading...</span>
         </div>
         <p className="mt-2 text-muted">Loading health data...</p>
+        {error && (
+          <div className="alert alert-danger mt-3">
+            Error: {error}
+          </div>
+        )}
       </div>
     );
   }
