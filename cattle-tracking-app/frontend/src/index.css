@@ -623,3 +623,38 @@ body {
   font-size: 3.5rem;
 }
 
+/* Add these to your existing CSS */
+[data-bs-theme="dark"] {
+  --primary-color: #4CAF50; /* Slightly lighter green for dark mode */
+  --primary-hover: #81C784;
+  --secondary-color: #2E7D32;
+  --background-light: #121212;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --text-color: #f8f9fa;
+  --bg-color: #212529;
+}
+
+/* Bootstrap dark mode overrides */
+[data-bs-theme="dark"] .card,
+[data-bs-theme="dark"] .modal-content,
+[data-bs-theme="dark"] .dropdown-menu {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+[data-bs-theme="dark"] .table {
+  --bs-table-bg: var(--bg-color);
+  --bs-table-striped-bg: #2c3034;
+  --bs-table-hover-bg: #373b3e;
+  color: var(--text-color);
+}
+
+[data-bs-theme="dark"] .form-control {
+  background-color: #2c3034;
+  color: var(--text-color);
+  border-color: #495057;
+}
+
+[data-bs-theme="dark"] .bg-light {
+  background-color: var(--bg-color) !important;
+}

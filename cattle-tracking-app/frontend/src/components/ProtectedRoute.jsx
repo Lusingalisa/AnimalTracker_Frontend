@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 
-function ProtectedRoute({ children }) {
+function ProtectedRoute({ children, darkMode }) {
   const token = localStorage.getItem('token');
   
   if (!token) {
@@ -8,6 +8,11 @@ function ProtectedRoute({ children }) {
   }
   
   return children;
+  return (
+    <div className={darkMode ? 'bg-dark text-light' : 'bg-light text-dark'}>
+      {children}
+    </div>
+  );
 }
 
 export default ProtectedRoute;
